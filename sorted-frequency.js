@@ -5,61 +5,53 @@ Time Complexity: O(log N)
 */
 
 function sortedFrequency(arr, n) {
-  // first occurrence
-  let first = findFirst(arr, n);
+  // firstIdx occurrence
+  let firstIdx = findFirst(arr, n);
 
-  //   last occurrence
-  let last = findLast(arr, n);
+  //   lastIdx occurrence
+  let lastIdx = findLast(arr, n);
 
   //   if number does not exist return -1
-  if (first === -1 || last === -1) {
+  if (firstIdx === -1 || lastIdx === -1) {
     return 0;
-  } else {
-    // total number of n
-    return last - first + 1;
   }
+  // total number of n
+  return lastIdx - firstIdx + 1;
 }
 
-// get index of first occurrence
-function findFirst(arr, n) {
-  let left = 0;
-  let right = arr.length - 1;
-  let first = -1;
-
+// get index of firstIdx occurrence
+function findFirst(arr, n, left = 0, right = arr.length - 1) {
   while (left <= right) {
     let middle = Math.floor((left + right) / 2);
 
-    if (arr[middle] === n) {
-      first = middle;
-      right = middle + 1;
+    if (arr[middle] === n && (middle === 0 || n > arr[middle - 1])) {
+      return middle;
     } else if (arr[middle] < n) {
-      left = middle + 1;
+      return findFirst(arr, n, middle + 1, right);
     } else {
-      right = middle - 1;
+      return findFirst(arr, n, left, middle - 1);
     }
   }
-  return first;
+  return -1;
 }
 
-// get index of last occurrence
-function findLast(arr, n) {
-  let left = 0;
-  let right = arr.length - 1;
-  let last = -1;
-
+// get index of lastIdx occurrence
+function findLast(arr, n, left = 0, right = arr.length - 1) {
   while (left <= right) {
     let middle = Math.floor((left + right) / 2);
 
-    if (arr[middle] === n) {
-      last = middle;
-      left = middle + 1;
-    } else if (arr[middle] < n) {
-      left = middle + 1;
+    if (
+      arr[middle] === n &&
+      (middle === arr.length - 1 || n < arr[middle + 1])
+    ) {
+      return middle;
+    } else if (arr[middle] > n) {
+      return findLast(arr, n, low, middle - 1);
     } else {
-      right = middle - 1;
+      return findLast(arr, n, middle + 1, right);
     }
   }
-  return last;
+  return -1;
 }
 
 module.exports = sortedFrequency;
