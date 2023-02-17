@@ -37,7 +37,7 @@ function findFirst(arr, n, left = 0, right = arr.length - 1) {
 
 // get index of lastIdx occurrence
 function findLast(arr, n, left = 0, right = arr.length - 1) {
-  while (left <= right) {
+  if (left <= right) {
     let middle = Math.floor((left + right) / 2);
 
     if (
@@ -46,7 +46,7 @@ function findLast(arr, n, left = 0, right = arr.length - 1) {
     ) {
       return middle;
     } else if (arr[middle] > n) {
-      return findLast(arr, n, low, middle - 1);
+      return findLast(arr, n, left, middle - 1);
     } else {
       return findLast(arr, n, middle + 1, right);
     }
